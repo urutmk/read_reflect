@@ -1,0 +1,40 @@
+<%- include('../partials/header')%>
+<body class="d-flex flex-column vh-100">
+  <%- include('../partials/navbar')%>
+
+
+  <div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+    <%- include('../partials/flash')%>
+    <div class="row">
+      <div class="col mx-auto"> 
+        <div class="card shadow text-center w-200">
+         
+          <div class="card-body">
+            <h5 class="card-title">Login</h5>
+
+            <form action="/login" method="POST" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" autofocus required>
+                <div class="invalid-feedback">
+                  Please enter your username.
+                </div>
+              </div>
+  
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+                <div class="invalid-feedback">
+                  Please enter your password.
+                </div>
+              </div>
+              <button type="submit" class="btn btn-success mx-auto">Login</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<%- include('../partials/footer')%>

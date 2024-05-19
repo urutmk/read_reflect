@@ -1,0 +1,80 @@
+<%- include('./partials/header')%>
+
+  <body class="d-flex flex-column vh-100">
+    <%- include('./partials/navbar')%>
+      <div class="container mt-5">
+      
+        <h1>Book Info</h1>
+
+        <form action="/bsearch" method="GET">
+          <div class="form-group">
+            <label for="query"> Name:</label>
+            <input type="text" class="form-control" id="query" name="query" placeholder="Enter book title" value=" " >
+          </div>
+          <div class="form-group mt-1">
+            <label for="author"> Author:</label>
+            <input type="text" class="form-control" id="author" name="author" placeholder="Enter author name" value=" ">
+          </div>
+          <button type="submit" class="btn btn-primary mt-1">Search</button>
+        </form>
+        <% if (books && books.length > 0) { %>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <% books.forEach((book, index) => { %>
+            <div class="col">
+              <div class="card h-100 w-75">
+                <img src="<%= book.volumeInfo?.imageLinks?.thumbnail %>" class="card-img-top h-75" alt="Book Cover">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <%= book.volumeInfo?.title %>
+                  </h5>
+                  <p class="card-text">Author: <%= book.volumeInfo?.authors?.join(', ') %></p>
+                  <p class="card-text">Rating: <%= book.volumeInfo?.averageRating || ' Not rated' %>
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <button type="button" class="btn btn-primary card-text" data-bs-toggle="modal" data-bs-target="#staticBackdrop<%= index %>">
+                    KNOW MORE
+                  </button>
+          
+                  <div class="modal fade" id="staticBackdrop<%= index %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel<%= index %>" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="staticBackdropLabel<%= index %>">
+                            <%= book.volumeInfo?.title %>
+                          </h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <%= book.volumeInfo?.description || 'no description available' %>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          
+                          <button type="button" class="btn btn-primary card-text addlist"
+                            data-title="<%= book.volumeInfo.title %>"
+                            data-author="<%= book.volumeInfo.authors && book.volumeInfo.authors.length > 0 ? book.volumeInfo.authors.join(', ') : '' %>"
+                            data-isbn="<%= book.volumeInfo.industryIdentifiers && book.volumeInfo.industryIdentifiers.length > 0
+                             ? book.volumeInfo.industryIdentifiers[0].identifier
+                             : '' %>"
+                             username="<%=currentUser %>">
+                             
+                            Add to Reading List
+                          </button>
+                        </div>
+                      </div>
+                    
+          
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+
+          </div>
+          <% } %>
+
+      </div>
+      <script src="/javascripts/main.js"></script>
+      <%- include('./partials/footer')%>

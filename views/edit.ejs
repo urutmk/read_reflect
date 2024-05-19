@@ -1,0 +1,24 @@
+<%- include('./partials/header') %>
+
+  <body class="d-flex flex-column vh-100">
+    <%- include ('./partials/navbar') %>
+
+      <div class="container mt-3">
+        <h1>update NOTE</h1>
+        <form action="/notes/<%= currentUser %>/<%=noteId %>?_method=PUT" method="POST">
+          <div class="form-group">
+            <label for="oldTitle">old Title</label>
+            <input type="text" class="form-control" id="oldTitle" name="oldTitle" value="<%= title %>" readonly>
+            <label for="oldNote">old Note</label>
+            <input type="text" class="form-control" id="oldNote" name="oldNote" value="<%= note %>" readonly>
+          </div>
+          <div class="form-group mt-2">
+            <label for="newTitle">New Title</label>
+            <input type="text" class="form-control" id="newTitle" name="newTitle" placeholder="Enter the new Title" required>
+            <label for="newNote">new Note</label>
+            <input type="text" class="form-control" id="newNote" name="newNote" placeholder="Enter the new note" required>
+          </div>
+          <button type="submit" class="btn btn-primary mt-1">Submit</button>
+        </form>
+        </div>
+ <%- include('./partials/footer') %>

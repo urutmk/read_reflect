@@ -1,0 +1,30 @@
+
+  <%- include('./partials/header') %>
+<body class="d-flex flex-column vh-100">
+  <%- include('./partials/navbar') %>
+  <%- include('./partials/flash') %>
+  <div class="container mt-3">
+    <h1>My reading List</h1>
+    <% if (books && books.length > 0) { %>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <% for(let book of books) { %>
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body bg-secondary d-flex flex-column justify-content-between">
+                <h5 class="card-title"><%= book.title %></h5>
+                <p class="card-text"><%= book.author %></p>
+                <form action="/books/<%=currentUser %>/<%=book._id %>?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger btn-sm float-start ms-2 delete-btn">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    <% } else { %>
+      <p>You don't have any books in your reading list yet!</p>
+    <% } %>
+  </div>
+
+  <%- include('./partials/footer') %>
+
