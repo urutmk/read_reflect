@@ -2,15 +2,20 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const session = require('express-session');
+const MongoDBStore = require("connect-mongo")(session);
+
 const flash = require('connect-flash');
 const path=require('path')
-const ExpressError = require('./utils/ExpressError');
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+
+const ExpressError = require('./utils/ExpressError');
 const User = require('./models/user.js');
 const userRoutes = require('./routes/users');
 const booksRouter = require('./routes/books');
 const noteRouter=require('./routes/notes')
+
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
 const dotenv=require('dotenv')
@@ -36,17 +41,31 @@ app.use(methodOverride('_method'))
         console.log(err)
     })
 
+    const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
-const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
+    const store = new MongoDBStore({
+        url: process.env.MONGO_URI,
+        secret,
+        touchAfter: 24 * 60 * 60
+    });
+    
+    store.on("error", function (e) {
+        console.log("SESSION STORE ERROR", e)
+    })
+    
+    const sessionConfig = {
+        store,
+        name: 'session',
+        secret,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        }
     }
-}
+    
 
 
 app.use(session(sessionConfig))

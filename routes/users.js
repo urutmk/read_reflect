@@ -13,7 +13,16 @@ function isLoggedIn(req, res, next) {
   next();
 }
 
-router.get('/register', (req, res) => {
+router.get('/register', (req, res,next) => {
+  if(req.user){
+    req.logout(function (err) {
+      if (err) {
+        return next(err);
+      }
+  });
+  res.redirect('register')
+}
+
   res.render('users/register');
 });
 
@@ -25,7 +34,7 @@ router.post('/register', async (req, res, next) => {
     req.login(registeredUser, err => {
       if (err) return next(err);
       req.flash('success', 'Welcome!');
-      res.redirect('/home');
+      res.redirect(`/books/${username}`);
     })
   } catch (e) {
     req.flash('error', e.message);
@@ -34,13 +43,16 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.get('/login', (req, res) => {
+  if(req.user)
+    res.redirect(`/books/${req.user.username}`)
   res.render('users/login');
+  
 })
 
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
   req.flash('success', 'welcome back!');
 
-  const redirectUrl = req.session.returnTo || '/home';
+  const redirectUrl = req.session.returnTo || `/books/${req.user.username}`;
   delete req.session.returnTo;
   res.redirect(redirectUrl);
 })
@@ -59,6 +71,7 @@ router.get('/home', isLoggedIn, (req, res) => {
   const username = req.user.username;
   res.render('index', { username })
 })
+
 router.get('/search', isLoggedIn, (req, res) => {
   const username = req.user.username;
   res.render('search', { error: null, books: null });
@@ -68,6 +81,7 @@ router.get('/notes', isLoggedIn, (req, res) => {
   const username = req.user.username;
   res.render('note', { username });
 });
+
 router.get('/bsearch', isLoggedIn, async (req, res, next) => {
   try {
     const { query, author } = req.query;
@@ -75,7 +89,8 @@ router.get('/bsearch', isLoggedIn, async (req, res, next) => {
 
     // Construct the API request URL with error handling
     const baseUrl = 'https://www.googleapis.com/books/v1/volumes';
-    let url = `${baseUrl}?q=${query}+inauthor:${author}&key=${process.env.GOOGLE_API}`;
+    const key=process.env.GOOGLE_API
+    let url = `${baseUrl}?q=${query}+inauthor:${author}&key=${key}`;
 
     try {
       const response = await axios.get(url);

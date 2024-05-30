@@ -1,0 +1,48 @@
+@import url('https://db.onlinewebfonts.com/c/999d88f087cee910ffcd5463095970f4?family=Paperclip');
+@import url(https://fonts.googleapis.com/css?family=Share:400,700&subset=latin,latin-ext);
+
+
+
+p {
+  color: white;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+
+h1 {
+  text-align: center;
+  font-family: Share, Helvetica, Arial, sans-serif;
+  font-size: 45px;
+  color: #ffa62b;
+}
+
+h2 {
+  text-align: center;
+  padding-bottom: 20px;
+  font-family: Share, Helvetica, Arial, sans-serif;
+  color: #ffa62b;
+}
+
+
+.title{
+  font-family: "Paperclip";
+  text-transform: uppercase;
+  font-size: 3em;
+}
+
+footer{
+  opacity: 0.7;
+  color: white;
+  height: auto; 
+}
+
+.text-muted{
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.justified-text {
+  text-align: justify;
+}

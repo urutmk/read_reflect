@@ -25,11 +25,11 @@ router.get('/:username', isLoggedIn, isAuthorized,async (req, res,next) => {
     const { username } = req.params;
     const user = await Book.findOne({ username });
     if (!user) {
-      res.render('home',{books:null})
+      res.render('list',{books:null})
     }
     const books=user.books
    
-    res.render('home',{books});
+    res.render('list',{books});
   } catch (err) {
     console.error('Error fetching books:', err);
     return next({ message: 'Internal server error' });

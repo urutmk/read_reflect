@@ -1,47 +1,62 @@
 <%- include('./partials/header') %>
 
-<body class="d-flex flex-column vh-100">
-  <%- include ('./partials/navbar') %>
+  <body class="d-flex flex-column vh-100">
+    <%- include ('./partials/navbar') %>
 
-  <div class="container mt-3">
-    <h1>ADD NOTE</h1>
-    <form action="/notes/<%= currentUser %>" method="POST" class="mb-3">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" name="title" placeholder="Enter the title" required>
-      </div>
-      <div class="mb-3">
-        <label for="note" class="form-label">Note</label>
-        <input type="text" class="form-control" id="note" name="note" placeholder="Enter your note" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-    <% if (notes && notes.length > 0) { %>
-      <h2>MY NOTES</h2>
-      <div class="row">
-        <% notes.forEach((note, index) => { %>
-          <div class="col-md-6 col-lg-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body bg-secondary d-flex flex-column">
-                <h5 class="card-title"><%=note.title %></h5>
-                <p class="card-text"><%= note.note %></p>
-                <div class="d-flex">
-                  <form action="/notes/<%= currentUser %>/<%= note._id %>/edit" method="GET">
-                    <button class="btn btn-warning btn-sm me-2">Update</button>
-                  </form>
-                  <form action="/notes/<%= currentUser %>/<%= note._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger btn-sm">Delete</button>
-                  </form>
+      <div class="container mt-3">
+        
+        <% if (notes && notes.length> 0) { %>
+          <h2>MY NOTES</h2>
+          <div class="row">
+            <% notes.forEach((note, index)=> { %>
+              <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card h-100">
+                  <div class="card-body bg-secondary d-flex flex-column">
+                    <h5 class="card-title">
+                      <%=note.title %>
+                    </h5>
+                    <p class="card-text">
+                      <%= note.note %>
+                    </p>
+                    <div class="d-flex">
+                      <form action="/notes/<%= currentUser %>/<%= note._id %>/edit" method="GET">
+                        <button class="btn btn-warning btn-sm me-2">Update</button>
+                      </form>
+                      <form action="/notes/<%= currentUser %>/<%= note._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+              <% }) %>
           </div>
-        <% }) %>
-      </div>
-    <% } else { %>
-      <p>You don't have any notes!</p>
-    <% } %>
-  </div>
+          <% } else { %>
+            <p>You don't have any notes!</p>
+            <% } %>
 
-  <%- include('./partials/footer') %>
+            <div class="dropdown mt-3">
+              <div class="d-flex flex-column justify-content-center align-items-center">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
+                data-bs-auto-close="outside">
+               ADD NOTE
+              </button>
+
+           
+                <form class="dropdown-menu p-4 mb-3 text-center w-50" action="/notes/<%= currentUser %>" method="POST" >
+                  <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter the title" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <input type="text" class="form-control" id="note" name="note" placeholder="Enter your note" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+          </div>
+    
+      </div>
+
+      <%- include('./partials/footer') %>
