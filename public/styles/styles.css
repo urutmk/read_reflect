@@ -1,0 +1,12 @@
+body{
+    background-image: linear-gradient(to right,#B4D4FF,#86B6F6,#B4D4FF);
+  }
+
+.card-body,.card-footer,.dropdown-menu{
+  background-image:linear-gradient(to right,#b294f8,#ACBCFF,#ACBCFF,#b294f8);
+}
+
+
+.nav-link.active {
+border-bottom: 3px solid red;
+}
